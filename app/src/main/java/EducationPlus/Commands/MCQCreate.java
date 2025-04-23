@@ -1,7 +1,9 @@
 package EducationPlus.Commands;
 
 import EducationPlus.Classes.Helpers.Test;
+import EducationPlus.Utility.DiscordUtility;
 import EducationPlus.Utility.JSONUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -36,18 +38,8 @@ public class MCQCreate {
         final Test.MCQ mcq = new Test.MCQ (mcqName, mcqDescription, {}, mcqSubject, mcqID);
         final EmbedBuilder embedBuilder = new EmbedBuilder ();
         {
+            embedBuilder.setDescription ("Your Multiple-Choice Question Test has been created with ID:```" + mcqID + "```");
         }
-        {
-            final OptionMapping descriptionOptionMapping = slashCommandInteractionEvent.getOption ("description");
-            final String mcqDescription = descriptionOptionMapping.getAsString ();
-            mcqJSONObject.put ("description", mcqDescription);
-        }
-        {
-            final OptionMapping subjectOptionMapping = slashCommandInteractionEvent.getOption ("subject");
-            final String mcqSubject = subjectOptionMapping.getAsString ();
-            mcqJSONObject.put ("subject", mcqSubject);
-        }
-        mcqJSONObject.put("id", mcqID);
-        final JSONObject mcqsJSONObject = mcqJSONObject.getJSONObject ("mcq");
+        DiscordUtility.respond (slashCommandInteractionEvent, embedBuilder);
     }
 }
