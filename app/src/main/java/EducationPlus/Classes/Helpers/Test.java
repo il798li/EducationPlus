@@ -47,6 +47,7 @@ public class Test {
             this.title = title;
             this.description = description;
             this.questions = questions;
+            mcqs.add (this);
         }
 
         public static class Question {
