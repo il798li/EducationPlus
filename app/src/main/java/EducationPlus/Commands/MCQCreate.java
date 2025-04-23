@@ -1,5 +1,6 @@
 package EducationPlus.Commands;
 
+import EducationPlus.Classes.Helpers.Test;
 import EducationPlus.Utility.JSONUtility;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -26,11 +27,15 @@ public class MCQCreate {
 
     public static void execute (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final String mcqID = LessonCreate.generateID (slashCommandInteractionEvent);
-        final JSONObject mcqJSONObject = new JSONObject ();
+        final OptionMapping nameOptionMapping = slashCommandInteractionEvent.getOption ("name");
+        final String mcqName = nameOptionMapping.getAsString ();
+        final OptionMapping descriptionOptionMapping = slashCommandInteractionEvent.getOption ("description");
+        final String mcqDescription = descriptionOptionMapping.getAsString ();
+        final OptionMapping subjectOptionMapping = slashCommandInteractionEvent.getOption ("subject");
+        final String mcqSubject = subjectOptionMapping.getAsString ();
+        final Test.MCQ mcq = new Test.MCQ (mcqName, mcqDescription, {}, mcqSubject, mcqID);
+        final EmbedBuilder embedBuilder = new EmbedBuilder ();
         {
-            final OptionMapping nameOptionMapping = slashCommandInteractionEvent.getOption ("name");
-            final String mcqName = nameOptionMapping.getAsString ();
-            mcqJSONObject.put ("name", mcqName);
         }
         {
             final OptionMapping descriptionOptionMapping = slashCommandInteractionEvent.getOption ("description");
