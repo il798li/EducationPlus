@@ -88,6 +88,16 @@ public class Test {
         public static MCQ fromJSON (final JSONObject jsonObject, final JDA jda) {
             return null;
         }
+
+        public static MCQ find (final String mcqID) {
+            for (final MCQ mcq : mcqs) {
+                final boolean matchingID = mcq.id.equals (mcqID);
+                if (matchingID) {
+                    return mcq;
+                }
+            }
+            return null;
+        }
     }
 
     public static class FRQ extends Test {
