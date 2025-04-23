@@ -1,6 +1,7 @@
 package EducationPlus.Commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -15,5 +16,11 @@ public class MCQAddQuestion {
             slashCommandData.addOption (OptionType.STRING, "wrong-" + index, "What is a wrong answer to your question", index == 1);
         }
         return slashCommandData;
+    }
+
+    public static void execute (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
+        final OptionMapping mcqIDOptionMapping = slashCommandInteractionEvent.getOption ("mcq-id");
+        final String mcqID = mcqIDOptionMapping.getAsString ();
+
     }
 }
