@@ -41,12 +41,16 @@ public class Test {
         public final Question[] questions;
         public final String title;
         public final String description;
+        public String id;
+        public String subject;
         public Message.Attachment image;
 
-        public MCQ (final String title, final String description, final Question[] questions) {
+        public MCQ (final String title, final String description, final Question[] questions, final String subject, final String id) {
             this.title = title;
             this.description = description;
             this.questions = questions;
+            this.subject = subject;
+            this.id = id;
             mcqs.add (this);
         }
 
