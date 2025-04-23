@@ -35,7 +35,8 @@ public class MCQCreate {
         final String mcqDescription = descriptionOptionMapping.getAsString ();
         final OptionMapping subjectOptionMapping = slashCommandInteractionEvent.getOption ("subject");
         final String mcqSubject = subjectOptionMapping.getAsString ();
-        final Test.MCQ mcq = new Test.MCQ (mcqName, mcqDescription, {}, mcqSubject, mcqID);
+        final Test.MCQ.Question[] questions = new Test.MCQ.Question[0];
+        final Test.MCQ mcq = new Test.MCQ (mcqName, mcqDescription, questions, mcqSubject, mcqID);
         final EmbedBuilder embedBuilder = new EmbedBuilder ();
         {
             embedBuilder.setDescription ("Your Multiple-Choice Question Test has been created with ID:```" + mcqID + "```");
