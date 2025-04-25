@@ -50,6 +50,7 @@ public class Ready extends ListenerAdapter {
             commandListUpdateAction.addCommands (LessonEditPage.slashCommandData);
             commandListUpdateAction.addCommands (LessonSearch.slashCommandData);
             commandListUpdateAction.addCommands (GUI.slashCommandData);
+            commandListUpdateAction.addCommands (MCQCreate.slashCommandData);
             commandListUpdateAction.queue ();
         }
         {

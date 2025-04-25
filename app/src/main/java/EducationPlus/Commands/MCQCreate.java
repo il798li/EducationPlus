@@ -27,6 +27,8 @@ public class MCQCreate {
         return slashCommandData;
     }
 
+    public static final SlashCommandData slashCommandData = slashCommandData ();
+
     public static void execute (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final String mcqID = LessonCreate.generateID (slashCommandInteractionEvent);
         final OptionMapping nameOptionMapping = slashCommandInteractionEvent.getOption ("name");
