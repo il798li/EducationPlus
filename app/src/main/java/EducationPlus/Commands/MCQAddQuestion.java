@@ -1,5 +1,9 @@
 package EducationPlus.Commands;
 
+import EducationPlus.Classes.Helpers.Test;
+import EducationPlus.Utility.DiscordUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -21,6 +25,30 @@ public class MCQAddQuestion {
     public static void execute (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         final OptionMapping mcqIDOptionMapping = slashCommandInteractionEvent.getOption ("mcq-id");
         final String mcqID = mcqIDOptionMapping.getAsString ();
-
+        final Test.MCQ mcq = Test.MCQ.find (mcqID);
+        if (mcq == null) {
+            final EmbedBuilder embedBuilder = new EmbedBuilder ();
+            embedBuilder.setTitle ("Error");
+            embedBuilder.setDescription ("I could not find a MCQ Test with ID:```" + mcqID + "```");
+            DiscordUtility.respond (slashCommandInteractionEvent, embedBuilder);
+            return;
+        }
+        final User user = slashCommandInteractionEvent.getUser ();
+        final String userID = user.getId ();
+        final boolean owner = mcqID.startsWith (userID);
+        if (owner == false) {
+            final EmbedBuilder embedBuilder = new EmbedBuilder ();
+            embedBuilder.setTitle ("Error");
+            embedBuilder.setDescription ("You are not the owner of the MCQ Test " + mcq.title + " with ID:```" + mcq.id + "```");
+            DiscordUtility.respond (slashCommandInteractionEvent, embedBuilder);
+            return;
+        }
+        if (mcq.questions.length >= 4) {
+            final EmbedBuilder embedBuilder = new EmbedBuilder ();
+            embedBuilder.setTitle ("Error");
+            embedBuilder.setDescription ("You cannot have more than 4 questions on a MCQ Test.");
+            DiscordUtility.respond (slashCommandInteractionEvent, embedBuilder);
+            return;
+        }
     }
 }
