@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 public class Test {
     public MessageCreateBuilder messageCreateBuilder (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         return null;
@@ -58,6 +59,7 @@ public class Test {
             public String correct;
             public String[] wrong;
             public String question;
+            public Message.Attachment image;
 
             public Question (final String question, final String correct, final String... wrong) {
                 this.question = question;
@@ -78,13 +80,20 @@ public class Test {
             public static Question fromMessage (final Message message) {
                 final String content = message.getContentRaw ();
                 final String[] parts = content.split ("\n");
-                final String question = parts[0];
+                final String questionText = parts[0];
                 final String correct = parts[1];
                 final String[] wrong = new String[parts.length - 2];
                 for (int index = 2; index < parts.length; index += 1) {
                     wrong[index - 2] = parts[index];
                 }
-                return new Question (question, correct, wrong);
+                final List<Message.Attachment> attachmentsList = message.getAttachments ();
+                final int attachmentsListLength = attachmentsList.size ();
+                final Question question = new Question (questionText, correct, wrong);
+                if (attachmentsListLength >= 1) {
+                    question.image = attachmentsList.get (0);
+                }
+                return question;
+            }
             }
         }
 
