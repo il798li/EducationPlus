@@ -1,8 +1,8 @@
-package EducationPlus.Commands;
+package EducationPlus.Commands.MCQ;
 
 import EducationPlus.Classes.Helpers.Test;
+import EducationPlus.Commands.Lesson.LessonCreate;
 import EducationPlus.Utility.DiscordUtility;
-import EducationPlus.Utility.JSONUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -10,7 +10,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import org.json.JSONObject;
 
 public class MCQCreate {
     public static SlashCommandData slashCommandData () {

@@ -1,4 +1,4 @@
-package EducationPlus.Commands;
+package EducationPlus.Commands.Lesson;
 
 import EducationPlus.Classes.Lesson;
 import EducationPlus.Utility.BasicUtility;

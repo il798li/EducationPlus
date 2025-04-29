@@ -5,6 +5,8 @@ import EducationPlus.Commands.*;
 import EducationPlus.Commands.Administrator.Settings;
 import EducationPlus.Commands.Basic.Ping;
 import EducationPlus.Commands.Basic.Statistics;
+import EducationPlus.Commands.Lesson.*;
+import EducationPlus.Commands.MCQ.MCQCreate;
 import EducationPlus.Commands.Restricted.Save;
 import EducationPlus.Main;
 import net.dv8tion.jda.api.JDA;

@@ -1,6 +1,6 @@
 package EducationPlus.Listeners;
 
-import EducationPlus.Commands.LessonSearch;
+import EducationPlus.Commands.Lesson.LessonSearch;
 import EducationPlus.Main;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

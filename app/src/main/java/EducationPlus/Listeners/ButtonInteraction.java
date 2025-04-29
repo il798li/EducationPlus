@@ -1,8 +1,8 @@
 package EducationPlus.Listeners;
 
 import EducationPlus.Commands.GUI;
-import EducationPlus.Commands.LessonLearn;
-import EducationPlus.Commands.LessonSearch;
+import EducationPlus.Commands.Lesson.LessonLearn;
+import EducationPlus.Commands.Lesson.LessonSearch;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.json.JSONObject;

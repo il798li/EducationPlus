@@ -1,4 +1,4 @@
-package EducationPlus.Commands;
+package EducationPlus.Commands.MCQ;
 
 import EducationPlus.Classes.Helpers.Test;
 import EducationPlus.Listeners.Ready;
@@ -19,8 +19,6 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 

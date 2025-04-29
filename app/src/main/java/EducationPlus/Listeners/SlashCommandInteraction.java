@@ -4,6 +4,7 @@ import EducationPlus.Commands.*;
 import EducationPlus.Commands.Administrator.Settings;
 import EducationPlus.Commands.Basic.Ping;
 import EducationPlus.Commands.Basic.Statistics;
+import EducationPlus.Commands.Lesson.*;
 import EducationPlus.Commands.Restricted.Save;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
