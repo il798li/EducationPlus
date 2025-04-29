@@ -38,7 +38,7 @@ public class Test {
 
     public static class MCQ extends Test {
         public static final ArrayList <MCQ> mcqs = new ArrayList <MCQ> ();
-        public final Question[] questions;
+        public Question[] questions;
         public final String title;
         public final String description;
         public String id;
@@ -65,19 +65,26 @@ public class Test {
                 this.wrong = wrong;
             }
 
-            public Question (final long messageID, final JDA jda) {
+            public static Question fromMessageID (final long messageID, final JDA jda) {
                 final TextChannel lessonPagesTextChannel = jda.getTextChannelById (Ready.lessonPagesTextChannelID);
                 final RestAction <Message> messageRestAction = lessonPagesTextChannel.retrieveMessageById (messageID);
+                final Question[] question = {null};
                 messageRestAction.queue (message -> {
-                    final String content = message.getContentRaw ();
-                    final String[] parts = content.split ("\n");
-                    this.question = parts[0];
-                    this.correct = parts[1];
-                    this.wrong = new String[parts.length - 2];
-                    for (int index = 2; index < parts.length; index += 1) {
-                        this.wrong[index - 2] = parts[index];
-                    }
+                    question[0] = fromMessage (message);
                 });
+                return question[0];
+            }
+
+            public static Question fromMessage (final Message message) {
+                final String content = message.getContentRaw ();
+                final String[] parts = content.split ("\n");
+                final String question = parts[0];
+                final String correct = parts[1];
+                final String[] wrong = new String[parts.length - 2];
+                for (int index = 2; index < parts.length; index += 1) {
+                    wrong[index - 2] = parts[index];
+                }
+                return new Question (question, correct, wrong);
             }
         }
 
