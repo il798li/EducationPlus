@@ -2,6 +2,7 @@ package EducationPlus.Classes.Helpers;
 
 import EducationPlus.Listeners.Ready;
 import EducationPlus.Utility.JSONUtility;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -94,6 +95,15 @@ public class Test {
                 }
                 return question;
             }
+
+            public EmbedBuilder embedBuilder () {
+                final EmbedBuilder embedBuilder = new EmbedBuilder ();
+                embedBuilder.setDescription (this.question);
+                if (this.image != null) {
+                    final String attachmentURL = this.image.getUrl ();
+                    embedBuilder.setImage (attachmentURL);
+                }
+                return embedBuilder;
             }
         }
 
