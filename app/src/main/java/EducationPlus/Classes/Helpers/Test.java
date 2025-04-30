@@ -1,14 +1,19 @@
 package EducationPlus.Classes.Helpers;
 
 import EducationPlus.Listeners.Ready;
+import EducationPlus.Listeners.SlashCommandInteraction;
 import EducationPlus.Utility.JSONUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
+import net.dv8tion.jda.internal.interactions.component.StringSelectMenuImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -87,7 +92,7 @@ public class Test {
                 for (int index = 2; index < parts.length; index += 1) {
                     wrong[index - 2] = parts[index];
                 }
-                final List<Message.Attachment> attachmentsList = message.getAttachments ();
+                final List <Message.Attachment> attachmentsList = message.getAttachments ();
                 final int attachmentsListLength = attachmentsList.size ();
                 final Question question = new Question (questionText, correct, wrong);
                 if (attachmentsListLength >= 1) {
@@ -95,20 +100,6 @@ public class Test {
                 }
                 return question;
             }
-
-            public EmbedBuilder embedBuilder () {
-                final EmbedBuilder embedBuilder = new EmbedBuilder ();
-                embedBuilder.setDescription (this.question);
-                if (this.image != null) {
-                    final String attachmentURL = this.image.getUrl ();
-                    embedBuilder.setImage (attachmentURL);
-                }
-                return embedBuilder;
-            }
-        }
-
-        public MessageCreateBuilder messageCreateBuilder (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
-            return null;
         }
 
         public static MCQ fromJSON (final JSONObject jsonObject, final JDA jda) {
@@ -123,6 +114,32 @@ public class Test {
                 }
             }
             return null;
+        }
+
+        public MessageCreateBuilder messageCreateBuilder (final int questionIndex) {
+            final Question question = this.questions[questionIndex];
+            final EmbedBuilder embedBuilder = new EmbedBuilder ();
+            embedBuilder.setDescription (question.question);
+            if (this.image != null) {
+                final String attachmentURL = this.image.getUrl ();
+                embedBuilder.setImage (attachmentURL);
+            }
+            final MessageEmbed messageEmbed = embedBuilder.build ();
+            final MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder ();
+            messageCreateBuilder.setEmbeds (messageEmbed);
+            final StringSelectMenu.Builder stringSelectMenuBuilder = StringSelectMenu.create ("");
+            final StringSelectMenu stringSelectMenu = stringSelectMenuBuilder.build ();
+            final ActionRow actionRow = ActionRow.of (stringSelectMenu);
+            messageCreateBuilder.addComponents (actionRow);
+            return messageCreateBuilder;
+        }
+
+        public String data (final int questionIndex) {
+            final JSONObject jsonObject = new JSONObject ();
+            final Question question = this.questions[questionIndex];
+            jsonObject.put ("mcq", this.id);
+            jsonObject.put ("question", questionIndex);
+            return jsonObject.toString ();
         }
     }
 
