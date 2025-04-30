@@ -103,12 +103,3 @@ public class MCQAddQuestion {
         });
     }
 }
-/*
-    if (lessonPageImageAttachment != null) {
-final AttachmentProxy lessonPageImageAttachmentProxy = lessonPageImageAttachment.getProxy ();
-final String lessonPageImageExtension = lessonPageImageAttachment.getFileExtension ();
-final FileUpload lessonPageImageFileUpload = FileUpload.fromStreamSupplier (lessonPageImageAttachment.getFileName (), () -> lessonPageImageAttachmentProxy.download ().join ());
-            lessonPageMessage.addFiles (lessonPageImageFileUpload);
-        }
-
- */
