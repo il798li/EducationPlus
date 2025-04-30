@@ -73,7 +73,7 @@ public class MCQAddQuestion {
             for (int wrongAnswer = 1; wrongAnswer <= 3; wrongAnswer += 1) {
                 final OptionMapping mcqWrongAnswerOptionMapping = slashCommandInteractionEvent.getOption ("wrong-" + wrongAnswer);
                 if (mcqWrongAnswerOptionMapping != null) {
-                    content += "\n" + mcqWrongAnswerOptionMapping.getAsString ()
+                    content += "\n" + mcqWrongAnswerOptionMapping.getAsString ();
                 }
             }
             questionMessageCreateBuilder.setContent (content);
@@ -82,13 +82,11 @@ public class MCQAddQuestion {
         if (questionImageOptionMapping != null) {
             final Message.Attachment questionPageAttachment = questionImageOptionMapping.getAsAttachment ();
             final AttachmentProxy attachmentProxy = questionPageAttachment.getProxy ();
-            final CompletableFuture<InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
-            inputStreamCompletableFuture.complete (null);
-            final FileUpload fileUpload = FileUpload.fromStreamSupplier (
-                questionPageAttachment.getFileName () + questionPageAttachment.getFileExtension (),
-                inputStreamCompletableFuture.get ()
-            );
-            questionMessageCreateBuilder.addFiles (fileUpload);
+                final CompletableFuture<InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
+                final InputStream inputStream = inputStreamCompletableFuture.join ();
+                final String questionPageAttachmentFileName = questionPageAttachment.getFileName ();
+                final FileUpload mcqQuestionImageFileUpload = FileUpload.fromData (inputStream, questionPageAttachmentFileName);
+            questionMessageCreateBuilder.addFiles (mcqQuestionImageFileUpload);
         }
         final JDA jda = slashCommandInteractionEvent.getJDA ();
         final TextChannel lessonPagesTextChannel = jda.getTextChannelById (Ready.lessonPagesTextChannelID);
