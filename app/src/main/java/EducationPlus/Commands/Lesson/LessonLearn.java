@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
@@ -67,7 +66,6 @@ public class LessonLearn {
         final String nextButtonID = jsonObject.toString ();
         Button nextButton = Button.of (ButtonStyle.PRIMARY, nextButtonID, "▶️");
         nextButton = nextButton.withDisabled (lesson.pages.length <= 1);
-        final ActionRow actionRow = ActionRow.of (previousButton, nextButton);
         final JDA jda = slashCommandInteractionEvent.getJDA ();
         final EmbedBuilder embedBuilder = lesson.embedBuilder (0, jda);
         final MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder ();
