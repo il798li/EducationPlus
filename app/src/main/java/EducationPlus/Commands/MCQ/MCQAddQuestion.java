@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 public class MCQAddQuestion {
+    private static final String letters = "abcdefghijklmnopqrstuvwxyz";
+
     public static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("mcq-add-question", "Adds a question to your Multiple-Choice Question Test.");
         slashCommandData.addOption (OptionType.STRING, "mcq-id", "What is the ID of your MCQ Test?", true);
@@ -82,10 +84,10 @@ public class MCQAddQuestion {
         if (questionImageOptionMapping != null) {
             final Message.Attachment questionPageAttachment = questionImageOptionMapping.getAsAttachment ();
             final AttachmentProxy attachmentProxy = questionPageAttachment.getProxy ();
-                final CompletableFuture<InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
-                final InputStream inputStream = inputStreamCompletableFuture.join ();
-                final String questionPageAttachmentFileName = questionPageAttachment.getFileName ();
-                final FileUpload mcqQuestionImageFileUpload = FileUpload.fromData (inputStream, questionPageAttachmentFileName);
+            final CompletableFuture <InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
+            final InputStream inputStream = inputStreamCompletableFuture.join ();
+            final String questionPageAttachmentFileName = questionPageAttachment.getFileName ();
+            final FileUpload mcqQuestionImageFileUpload = FileUpload.fromData (inputStream, questionPageAttachmentFileName);
             questionMessageCreateBuilder.addFiles (mcqQuestionImageFileUpload);
         }
         final JDA jda = slashCommandInteractionEvent.getJDA ();
