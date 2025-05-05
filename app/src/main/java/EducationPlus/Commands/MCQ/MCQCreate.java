@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 public class MCQCreate {
-    public static SlashCommandData slashCommandData () {
+    private static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("mcq-create", "Creates a test with multiple-choice questions that other learners can take.");
         slashCommandData.addOption (OptionType.STRING, "name", "What should your test be named?", true);
         slashCommandData.addOption (OptionType.STRING, "description", "What are you testing learners on?", true);

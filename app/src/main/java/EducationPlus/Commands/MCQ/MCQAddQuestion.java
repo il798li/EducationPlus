@@ -32,7 +32,7 @@ public class MCQAddQuestion {
     private static final String letters = "abcdefghijklmnopqrstuvwxyz";
     public static final SlashCommandData slashCommandData = slashCommandData ();
 
-    public static SlashCommandData slashCommandData () {
+    private static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("mcq-add-question", "Adds a question to your Multiple-Choice Question Test.");
         slashCommandData.addOption (OptionType.STRING, "mcq-id", "What is the ID of your MCQ Test?", true);
         slashCommandData.addOption (OptionType.STRING, "question", "What should your question ask?", true);
