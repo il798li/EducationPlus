@@ -26,12 +26,12 @@ public class LessonCreate {
         "Science",
         "Other"
     };
-    public static final String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public static SlashCommandData slashCommandData () {
-        SlashCommandData slashCommandData = Commands.slash ("lesson-create", "Allows you to create a unique lesson.");
+    private static SlashCommandData slashCommandData () {
+        final SlashCommandData slashCommandData = Commands.slash ("lesson-create", "Allows you to create a unique lesson.");
         slashCommandData.addOption (OptionType.STRING, "name", "What is the name of your lesson?", true);
-        OptionData subjectOptionData = new OptionData (OptionType.STRING, "subject", "What is the subject of your lesson?", true);
+        final OptionData subjectOptionData = new OptionData (OptionType.STRING, "subject", "What is the subject of your lesson?", true);
         for (final String subject : subjects) {
             subjectOptionData.addChoice (subject, subject);
         }
@@ -72,10 +72,10 @@ public class LessonCreate {
     }
 
     private static char randomChar () {
-        final double randomDouble = Math.random ();
+        double randomDouble = Math.random ();
         final int expandedRandomDoubleSize = characters.length ();
-        final double expandedRandomDouble = randomDouble * expandedRandomDoubleSize;
-        final int expandedRandomIndex = (int) (expandedRandomDouble);
+        randomDouble *= expandedRandomDoubleSize;
+        final int expandedRandomIndex = (int) (randomDouble);
         final char randomCharacter = characters.charAt (expandedRandomIndex);
         return randomCharacter;
     }

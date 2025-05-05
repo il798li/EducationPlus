@@ -1,7 +1,6 @@
 package EducationPlus.Classes.Helpers;
 
 import EducationPlus.Listeners.Ready;
-import EducationPlus.Listeners.SlashCommandInteraction;
 import EducationPlus.Utility.JSONUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -13,7 +12,6 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
-import net.dv8tion.jda.internal.interactions.component.StringSelectMenuImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

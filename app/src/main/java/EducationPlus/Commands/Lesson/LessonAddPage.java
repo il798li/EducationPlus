@@ -23,7 +23,7 @@ import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 public class LessonAddPage {
-    public static SlashCommandData slashCommandData () {
+    private static SlashCommandData slashCommandData () {
         final SlashCommandData lessonAddPageSlashCommandData = Commands.slash ("lesson-add-page", "Adds a page to an existing lesson.");
         lessonAddPageSlashCommandData.addOption (OptionType.STRING, "lesson-id", "What is your lesson's ID?", true);
         lessonAddPageSlashCommandData.addOption (OptionType.STRING, "content", "What text content should this page display?", true);

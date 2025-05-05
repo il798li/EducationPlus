@@ -30,6 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class MCQAddQuestion {
     private static final String letters = "abcdefghijklmnopqrstuvwxyz";
+    public static final SlashCommandData slashCommandData = slashCommandData ();
 
     public static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("mcq-add-question", "Adds a question to your Multiple-Choice Question Test.");

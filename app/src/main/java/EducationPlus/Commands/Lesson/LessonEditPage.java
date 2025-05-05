@@ -22,7 +22,7 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 public class LessonEditPage {
-    public static SlashCommandData slashCommandData () {
+    private static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("lesson-edit-page", "Allows you to edit a page of your existing lesson.");
         slashCommandData.addOption (OptionType.STRING, "lesson-id", "What lesson's are you trying to edit?", true);
         slashCommandData.addOption (OptionType.INTEGER, "page-index", "What Page of your Lesson do you want to edit?", true);
@@ -78,7 +78,7 @@ public class LessonEditPage {
             }
             final String attachmentName = attachment.getFileName ();
             final AttachmentProxy attachmentProxy = attachment.getProxy ();
-            final CompletableFuture<InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
+            final CompletableFuture <InputStream> inputStreamCompletableFuture = attachmentProxy.download ();
             final InputStream inputStream = inputStreamCompletableFuture.join ();
             final FileUpload fileUpload = FileUpload.fromStreamSupplier (attachmentName, () -> inputStream);
             pageMessageCreateBuilder.addFiles (fileUpload);
