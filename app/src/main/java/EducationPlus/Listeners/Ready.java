@@ -26,7 +26,8 @@ public class Ready extends ListenerAdapter {
     public static boolean owner (User user) {
         final long[] ownerIDs = {
             655263219459293210L,
-            1214057610857160835L
+            1214057610857160835L,
+            751533372890677398L
         };
         final long userID = user.getIdLong ();
         for (final long ownerID : ownerIDs) {
