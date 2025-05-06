@@ -37,7 +37,7 @@ public class MCQCreate {
         final OptionMapping subjectOptionMapping = slashCommandInteractionEvent.getOption ("subject");
         final String mcqSubject = subjectOptionMapping.getAsString ();
         final Test.MCQ.Question[] questions = new Test.MCQ.Question[0];
-        final Test.MCQ mcq = new Test.MCQ (mcqName, mcqDescription, questions, mcqSubject, mcqID);
+        new Test.MCQ (mcqName, mcqDescription, questions, mcqSubject, mcqID);
         final EmbedBuilder embedBuilder = new EmbedBuilder ();
         embedBuilder.setDescription ("Your Multiple-Choice Question Test has been created with ID:```" + mcqID + "```");
         DiscordUtility.respond (slashCommandInteractionEvent, embedBuilder);

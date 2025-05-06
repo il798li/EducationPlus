@@ -69,7 +69,7 @@ public class Main {
         final int length = debug.length ();
         for (int index = 0; index < length; index++) {
             String character = debug.charAt (index) + "";
-            boolean newLine = character.equals ("\n");
+            final boolean newLine = character.equals ("\n");
             if (newLine) {
                 character += startingString;
             }

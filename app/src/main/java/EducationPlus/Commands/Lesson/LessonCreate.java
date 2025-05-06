@@ -72,9 +72,8 @@ public class LessonCreate {
     }
 
     private static char randomChar () {
-        double randomDouble = Math.random ();
         final int expandedRandomDoubleSize = characters.length ();
-        randomDouble *= expandedRandomDoubleSize;
+        double randomDouble = Math.random () * expandedRandomDoubleSize;
         final int expandedRandomIndex = (int) (randomDouble);
         final char randomCharacter = characters.charAt (expandedRandomIndex);
         return randomCharacter;
