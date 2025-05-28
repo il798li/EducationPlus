@@ -15,8 +15,9 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.el.LambdaExpression;
+import java.util.*;
+import java.util.function.Function;
 public class Test {
     public MessageCreateBuilder messageCreateBuilder (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         return null;
@@ -63,12 +64,19 @@ public class Test {
             public String correct;
             public String[] wrong;
             public String question;
+            public List <String> answers;
             public Message.Attachment image;
 
             public Question (final String question, final String correct, final String... wrong) {
                 this.question = question;
                 this.correct = correct;
                 this.wrong = wrong;
+                this.answers = new ArrayList <String> ();
+                answers.add (correct);
+                for (final String wrongAnswer : wrong) {
+                    answers.add (wrongAnswer);
+                }
+                Collections.shuffle (this.answers);
             }
 
             public static Question fromMessageID (final long messageID, final JDA jda) {
@@ -100,6 +108,36 @@ public class Test {
             }
         }
 
+        public static class Attempt {
+            private final long userID;
+            private final String mcqID;
+            public final MCQ mcq;
+            public final short[] answers;
+            private final long messageID;
+            public int questionIndex;
+
+            public static Set <Attempt> attempts = new HashSet <Attempt> ();
+
+            public Attempt (final long userID, final String mcqID, final short[] answers, final long messageID) {
+                this.userID = userID;
+                this.mcqID = mcqID;
+                this.answers = answers;
+                this.messageID = messageID;
+                this.questionIndex = 1;
+                this.mcq = MCQ.find (mcqID);
+                attempts.add (this);
+            }
+
+            public static Attempt find (final long messageID) {
+                for (final Attempt attempt : attempts) {
+                    if (attempt.messageID == messageID) {
+                        return attempt;
+                    }
+                }
+                return null;
+            }
+        }
+
         public static MCQ fromJSON (final JSONObject jsonObject, final JDA jda) {
             return null;
         }
@@ -125,10 +163,6 @@ public class Test {
             final MessageEmbed messageEmbed = embedBuilder.build ();
             final MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder ();
             messageCreateBuilder.setEmbeds (messageEmbed);
-            final StringSelectMenu.Builder stringSelectMenuBuilder = StringSelectMenu.create ("");
-            final StringSelectMenu stringSelectMenu = stringSelectMenuBuilder.build ();
-            final ActionRow actionRow = ActionRow.of (stringSelectMenu);
-            messageCreateBuilder.addComponents (actionRow);
             return messageCreateBuilder;
         }
 

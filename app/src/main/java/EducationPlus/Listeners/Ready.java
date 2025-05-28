@@ -6,6 +6,8 @@ import EducationPlus.Commands.Administrator.Settings;
 import EducationPlus.Commands.Basic.Ping;
 import EducationPlus.Commands.Basic.Statistics;
 import EducationPlus.Commands.Lesson.*;
+import EducationPlus.Commands.MCQ.MCQAddQuestion;
+import EducationPlus.Commands.MCQ.MCQAttempt;
 import EducationPlus.Commands.MCQ.MCQCreate;
 import EducationPlus.Commands.Restricted.Save;
 import EducationPlus.Main;
@@ -54,6 +56,8 @@ public class Ready extends ListenerAdapter {
             commandListUpdateAction.addCommands (LessonSearch.slashCommandData);
             commandListUpdateAction.addCommands (GUI.slashCommandData);
             commandListUpdateAction.addCommands (MCQCreate.slashCommandData);
+            commandListUpdateAction.addCommands (MCQAttempt.slashCommandData);
+            commandListUpdateAction.addCommands (MCQAddQuestion.slashCommandData);
             commandListUpdateAction.queue ();
         }
         {

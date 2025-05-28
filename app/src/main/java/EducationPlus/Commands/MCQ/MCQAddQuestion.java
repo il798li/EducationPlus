@@ -32,15 +32,18 @@ public class MCQAddQuestion {
     private static final String letters = "abcdefghijklmnopqrstuvwxyz";
     public static final SlashCommandData slashCommandData = slashCommandData ();
 
+    private static final Emoji whiteCheckMarkEmoji = Emoji.fromUnicode ("✅");
+    private static final Emoji xEmoji = Emoji.fromUnicode ("❌");
+
     private static SlashCommandData slashCommandData () {
         final SlashCommandData slashCommandData = Commands.slash ("mcq-add-question", "Adds a question to your Multiple-Choice Question Test.");
         slashCommandData.addOption (OptionType.STRING, "mcq-id", "What is the ID of your MCQ Test?", true);
         slashCommandData.addOption (OptionType.STRING, "question", "What should your question ask?", true);
-        slashCommandData.addOption (OptionType.ATTACHMENT, "image", "What image should your question display?");
         slashCommandData.addOption (OptionType.STRING, "correct", "What is the correct answer to your question?", true);
         for (short index = 1; index <= 3; index += 1) {
             slashCommandData.addOption (OptionType.STRING, "wrong-" + index, "What is a wrong answer to your question", index == 1);
         }
+        slashCommandData.addOption (OptionType.ATTACHMENT, "image", "What image should your question display?");
         return slashCommandData;
     }
 
@@ -57,7 +60,7 @@ public class MCQAddQuestion {
         }
         final User user = slashCommandInteractionEvent.getUser ();
         final String userID = user.getId ();
-        final boolean owner = mcqID.startsWith (userID);
+        final boolean owner = mcqID.endsWith (userID);
         if (owner == false) {
             final EmbedBuilder embedBuilder = new EmbedBuilder ();
             embedBuilder.setTitle ("Error");
@@ -84,6 +87,8 @@ public class MCQAddQuestion {
                 final OptionMapping mcqWrongAnswerOptionMapping = slashCommandInteractionEvent.getOption ("wrong-" + wrongAnswer);
                 if (mcqWrongAnswerOptionMapping != null) {
                     content += "\n" + mcqWrongAnswerOptionMapping.getAsString ();
+                } else {
+                    break;
                 }
             }
             questionMessageCreateBuilder.setContent (content);
@@ -115,31 +120,30 @@ public class MCQAddQuestion {
             }
             newMCQQuestions[mcq.questions.length] = newQuestion;
             mcq.questions = newMCQQuestions;
-        });
-        responseEmbedBuilder.setTitle ("Success");
-        responseEmbedBuilder.setDescription ("Your question was successfully added to MCQ " + mcq.title + " with ID:```" + mcq.id + "```");
-        responseEmbedBuilder.addField ("Question", mcqQuestionText, false);
-        final MessageEmbed responseEmbed = responseEmbedBuilder.build ();
-        final MessageCreateBuilder responseMessageCreateBuilder = new MessageCreateBuilder ();
-        responseMessageCreateBuilder.setEmbeds (responseEmbed);
-        {
-            final JSONObject jsonObject = new JSONObject ();
-            jsonObject.put ("command", "mcq-add-question");
-            final String customID = jsonObject.toString ();
-            final StringSelectMenu.Builder stringSelectMenuBuilder = StringSelectMenu.create (customID);
-            final Test.MCQ.Question question = mcq.questions[mcq.questions.length - 1];
-            final Emoji whiteCheckMarkEmoji = Emoji.fromUnicode ("✅");
-            final Emoji xEmoji = Emoji.fromUnicode ("❌");
-            stringSelectMenuBuilder.addOption (question.correct, question.correct, whiteCheckMarkEmoji);
-            for (final String wrongAnswer : question.wrong) {
-                stringSelectMenuBuilder.addOption (wrongAnswer, wrongAnswer, xEmoji);
+
+            responseEmbedBuilder.setTitle ("Success");
+            responseEmbedBuilder.setDescription ("Your question was successfully added to MCQ " + mcq.title + " with ID:```" + mcq.id + "```");
+            responseEmbedBuilder.addField ("Question", mcqQuestionText, false);
+            final MessageEmbed responseEmbed = responseEmbedBuilder.build ();
+            final MessageCreateBuilder responseMessageCreateBuilder = new MessageCreateBuilder ();
+            responseMessageCreateBuilder.setEmbeds (responseEmbed);
+            {
+                final JSONObject jsonObject = new JSONObject ();
+                jsonObject.put ("command", "mcq-add-question");
+                final String customID = jsonObject.toString ();
+                final StringSelectMenu.Builder stringSelectMenuBuilder = StringSelectMenu.create (customID);
+                final Test.MCQ.Question question = mcq.questions[mcq.questions.length - 1];
+                stringSelectMenuBuilder.addOption (question.correct, question.correct, whiteCheckMarkEmoji);
+                for (final String wrongAnswer : question.wrong) {
+                    stringSelectMenuBuilder.addOption (wrongAnswer, wrongAnswer, xEmoji);
+                }
+                final StringSelectMenu stringSelectMenu = stringSelectMenuBuilder.build ();
+                responseMessageCreateBuilder.addActionRow (stringSelectMenu);
             }
-            final StringSelectMenu stringSelectMenu = stringSelectMenuBuilder.build ();
-            responseMessageCreateBuilder.addActionRow (stringSelectMenu);
-        }
-        final MessageCreateData messageCreateData = responseMessageCreateBuilder.build ();
-        final InteractionHook interactionHook = slashCommandInteractionEvent.getHook ();
-        final WebhookMessageCreateAction <Message> messageWebhookMessageCreateAction = interactionHook.sendMessage (messageCreateData);
-        messageWebhookMessageCreateAction.queue ();
+            final MessageCreateData messageCreateData = responseMessageCreateBuilder.build ();
+            final InteractionHook interactionHook = slashCommandInteractionEvent.getHook ();
+            final WebhookMessageCreateAction <Message> messageWebhookMessageCreateAction = interactionHook.sendMessage (messageCreateData);
+            messageWebhookMessageCreateAction.queue ();
+        });
     }
 }

@@ -5,6 +5,9 @@ import EducationPlus.Commands.Administrator.Settings;
 import EducationPlus.Commands.Basic.Ping;
 import EducationPlus.Commands.Basic.Statistics;
 import EducationPlus.Commands.Lesson.*;
+import EducationPlus.Commands.MCQ.MCQAddQuestion;
+import EducationPlus.Commands.MCQ.MCQAttempt;
+import EducationPlus.Commands.MCQ.MCQCreate;
 import EducationPlus.Commands.Restricted.Save;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -51,6 +54,18 @@ public class SlashCommandInteraction extends ListenerAdapter {
             }
             case "lesson-search": {
                 LessonSearch.execute (slashCommandInteractionEvent);
+                break;
+            }
+            case "mcq-create": {
+                MCQCreate.execute (slashCommandInteractionEvent);
+                break;
+            }
+            case "mcq-add-question": {
+                MCQAddQuestion.execute (slashCommandInteractionEvent);
+                break;
+            }
+            case "mcq-attempt": {
+                MCQAttempt.execute (slashCommandInteractionEvent);
                 break;
             }
             case "gui": {

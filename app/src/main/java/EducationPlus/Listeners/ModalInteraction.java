@@ -6,4 +6,5 @@ public class ModalInteraction extends ListenerAdapter {
     public void onModalInteraction (final ModalInteractionEvent modalInteractionEvent) {
         modalInteractionEvent.reply("test modal response").queue ();
     }
+
 }
