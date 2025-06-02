@@ -18,7 +18,6 @@ public class StringSelectInteraction extends ListenerAdapter {
         switch (command) {
             case "mcq-attempt": {
                 MCQAttempt.stringSelectInteraction (stringSelectInteractionEvent);
-                Main.debug ("mcq attempt something selected");
                 break;
             }
             default: {

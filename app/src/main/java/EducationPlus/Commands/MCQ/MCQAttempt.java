@@ -135,7 +135,6 @@ public class MCQAttempt {
         final Test.MCQ.Question question = attempt.mcq.questions[attempt.questionIndex - 1];
         final boolean forAnswerSelect = jsonObject.getBoolean ("for-answer-select");
         if (forAnswerSelect) {
-            Main.debug ("answer selected");
             final List <SelectOption> selectOptionList = stringSelectInteractionEvent.getSelectedOptions ();
             final int answersSize = question.answers.size ();
             final SelectOption selectedOption = selectOptionList.get (0);
