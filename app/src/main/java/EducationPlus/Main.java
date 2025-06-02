@@ -55,6 +55,10 @@ public class Main {
                 final ModalInteraction modalInteraction = new ModalInteraction ();
                 jda.addEventListener (modalInteraction);
             }
+            {
+                final StringSelectInteraction stringSelectInteraction = new StringSelectInteraction ();
+                jda.addEventListener (stringSelectInteraction);
+            }
         }
     }
 

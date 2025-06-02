@@ -1,6 +1,7 @@
 package EducationPlus.Listeners;
 
 import EducationPlus.Commands.MCQ.MCQAttempt;
+import EducationPlus.Main;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -17,6 +18,7 @@ public class StringSelectInteraction extends ListenerAdapter {
         switch (command) {
             case "mcq-attempt": {
                 MCQAttempt.stringSelectInteraction (stringSelectInteractionEvent);
+                Main.debug ("mcq attempt something selected");
                 break;
             }
             default: {

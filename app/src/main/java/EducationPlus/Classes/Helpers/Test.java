@@ -1,6 +1,7 @@
 package EducationPlus.Classes.Helpers;
 
 import EducationPlus.Listeners.Ready;
+import EducationPlus.Utility.DiscordUtility;
 import EducationPlus.Utility.JSONUtility;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -160,6 +161,7 @@ public class Test {
                 final String attachmentURL = this.image.getUrl ();
                 embedBuilder.setImage (attachmentURL);
             }
+            embedBuilder.setColor (DiscordUtility.blurple);
             final MessageEmbed messageEmbed = embedBuilder.build ();
             final MessageCreateBuilder messageCreateBuilder = new MessageCreateBuilder ();
             messageCreateBuilder.setEmbeds (messageEmbed);
