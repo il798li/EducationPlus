@@ -140,7 +140,19 @@ public class Test {
         }
 
         public static MCQ fromJSON (final JSONObject jsonObject, final JDA jda) {
-            return null;
+            final String mcqID = jsonObject.getString ("id");
+            final String title = jsonObject.getString ("title");
+            final String description = jsonObject.getString ("description");
+            final String subject = jsonObject.getString ("subject");
+            final JSONArray questionMessageIDsJSONArray = jsonObject.getJSONArray ("questions");
+            final int size = questionMessageIDsJSONArray.length ();
+            final Question[] mcqQuestions = new Question[size];
+            for (int index = 0; index < size; index += 1) {
+                final long questionMessageID = questionMessageIDsJSONArray.getLong (index);
+                final Question question = Question.fromMessageID (questionMessageID, jda);
+                mcqQuestions[index] = question;
+            }
+            return new MCQ(title, description, mcqQuestions, subject, mcqID);
         }
 
         public static MCQ find (final String mcqID) {
