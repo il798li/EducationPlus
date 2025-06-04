@@ -32,7 +32,7 @@ public class MCQAddQuestion {
     private static final String letters = "abcdefghijklmnopqrstuvwxyz";
     public static final SlashCommandData slashCommandData = slashCommandData ();
 
-    private static final Emoji whiteCheckMarkEmoji = Emoji.fromUnicode ("✅");
+    public static final Emoji whiteCheckMarkEmoji = Emoji.fromUnicode ("✅");
     private static final Emoji xEmoji = Emoji.fromUnicode ("❌");
 
     private static SlashCommandData slashCommandData () {
