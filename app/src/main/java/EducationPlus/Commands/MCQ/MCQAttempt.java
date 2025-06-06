@@ -17,9 +17,13 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.components.ActionComponent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.LayoutComponent;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
+import net.dv8tion.jda.api.requests.restaction.interactions.MessageEditCallbackAction;
+import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
@@ -128,15 +132,24 @@ public class MCQAttempt {
         return stringSelectMenuBuilder.build ();
     }
 
+    private static Button submitButton (final Test.MCQ.Attempt attempt) {
+        final JSONObject jsonObject = new JSONObject ();
+        jsonObject.put ("command", "mcq-attempt");
+        final String customID = jsonObject.toString ();
+        final Button submitButton = Button.of(ButtonStyle.SUCCESS, customID, "Submit", MCQAddQuestion.whiteCheckMarkEmoji);
+        return submitButton;
+    }
+
     public static void stringSelectInteraction (final StringSelectInteractionEvent stringSelectInteractionEvent) {
+        final User user = stringSelectInteractionEvent.getUser ();
         {
-            final User user = stringSelectInteractionEvent.getUser ();
             final long userID = user.getIdLong ();
             final String customID = stringSelectInteractionEvent.getComponentId ();
             final JSONObject dataJSONObject = new JSONObject (customID);
             final long expectedUserID = dataJSONObject.getLong ("user-id");
             if (userID != expectedUserID) {
-                stringSelectInteractionEvent.deferReply (true).queue ();
+                final ReplyCallbackAction deferReplyCallbackAction = stringSelectInteractionEvent.deferReply (true);
+                deferReplyCallbackAction.queue ();
                 final InteractionHook interactionHook = stringSelectInteractionEvent.getHook ();
                 final EmbedBuilder embedBuilder = new EmbedBuilder ();
                 embedBuilder.setTitle ("Error");
@@ -178,13 +191,23 @@ public class MCQAttempt {
             StringSelectMenu answerSelect = (StringSelectMenu) actionComponent;
             final StringSelectMenu.Builder answerSelectMenuBuilder = answerSelect.createCopy ();
             answerSelectMenuBuilder.setDefaultValues (answerSelectMenuBuilder.getOptions ().get (answer - 1).getValue ());
-            messageEditBuilder.setComponents (message.getComponents ().get (0), ActionRow.of (answerSelectMenuBuilder.build ()));
+            messageEditBuilder.setComponents (message.getComponents ().get (0), ActionRow.of (answerSelectMenuBuilder.build ()), ActionRow.of(submitButton (attempt)));
             stringSelectInteractionEvent.editMessage (messageEditBuilder.build ()).queue ();
         } else {
             final SelectOption selectOption = selectOptionList.get (0);
             final String selectOptionValue = selectOption.getValue ();
             final int questionIndex = Integer.valueOf (selectOptionValue) - 1;
-            final Test.MCQ.Question newQuestion = attempt.mcq.questions[questionIndex];
+            final MessageCreateBuilder newQuestionMessageCreateBuilder = attempt.mcq.messageCreateBuilder (questionIndex);
+            final StringSelectMenu answerStringSelect = answerSelect (messageID, user);
+            final StringSelectMenu questionStringSelect = questionSelect (attempt.mcq, user, attempt.questionIndex + 1, attempt.answers);
+            final Button submitButton = submitButton (attempt);
+            newQuestionMessageCreateBuilder.addActionRow (questionStringSelect);
+            newQuestionMessageCreateBuilder.addActionRow (answerStringSelect);
+            newQuestionMessageCreateBuilder.addActionRow (submitButton);
+            final MessageCreateData newQuestionMessageCreateData = newQuestionMessageCreateBuilder.build ();
+            final MessageEditData newQuestionMessageEditData = MessageEditData.fromCreateData (newQuestionMessageCreateData);
+            final MessageEditCallbackAction newQuestionMessageEditCallbackAction = stringSelectInteractionEvent.editMessage (newQuestionMessageEditData);
+            newQuestionMessageEditCallbackAction.queue ();
         }
     }
 }

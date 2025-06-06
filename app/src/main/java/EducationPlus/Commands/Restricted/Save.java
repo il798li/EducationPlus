@@ -1,6 +1,7 @@
 package EducationPlus.Commands.Restricted;
 
 import EducationPlus.Classes.Helpers.Display;
+import EducationPlus.Classes.Helpers.Test;
 import EducationPlus.Classes.Lesson;
 import EducationPlus.Listeners.Ready;
 import EducationPlus.Utility.DiscordUtility;
@@ -37,5 +38,6 @@ public class Save {
 
     public static void save () {
         Lesson.save ();
+        Test.save ();
     }
 }

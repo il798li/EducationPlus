@@ -1,5 +1,6 @@
 package EducationPlus.Listeners;
 
+import EducationPlus.Classes.Helpers.Test;
 import EducationPlus.Classes.Lesson;
 import EducationPlus.Commands.*;
 import EducationPlus.Commands.Administrator.Settings;
@@ -70,6 +71,7 @@ public class Ready extends ListenerAdapter {
         final long ping = Ping.ping (jda);
         presence (jda);
         Lesson.load (jda);
+        Test.load (jda);
         Main.debug (name + " is responding to commands with " + ping + " milliseconds of latency...");
     }
 

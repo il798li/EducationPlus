@@ -9,16 +9,12 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.el.LambdaExpression;
 import java.util.*;
-import java.util.function.Function;
 public class Test {
     public MessageCreateBuilder messageCreateBuilder (final SlashCommandInteractionEvent slashCommandInteractionEvent) {
         return null;
@@ -28,19 +24,24 @@ public class Test {
 
     public static void load (final JDA jda) {
         final JSONObject testsJSONObject = JSONUtility.load (JSONUtility.JSONFile.Tests);
-        final JSONArray testsJSONArray = testsJSONObject.getJSONArray ("tests");
+        final JSONArray testsJSONArray = testsJSONObject.getJSONArray ("mcqs");
         final int length = testsJSONArray.length ();
         for (int index = 0; index < length; index += 1) {
             final JSONObject testJSONObject = testsJSONArray.getJSONObject (index);
-            final boolean testType = testJSONObject.getBoolean ("mcq");
-            if (testType) {
-                final MCQ mcq = MCQ.fromJSON (testJSONObject, jda);
-                tests.add (mcq);
-            } else {
-                final FRQ frq = FRQ.fromJSON (testJSONObject, jda);
-                tests.add (frq);
-            }
+            final MCQ mcq = MCQ.fromJSON (testJSONObject, jda);
+            tests.add (mcq);
         }
+    }
+
+    public static void save () {
+        final JSONObject testsJSONObject = new JSONObject ();
+        final JSONArray mcqsJSONArray = new JSONArray ();
+        for (final MCQ mcq : MCQ.mcqs) {
+            final JSONObject mcqJSONObject = mcq.toJSON ();
+            mcqsJSONArray.put (mcqJSONObject);
+        }
+        testsJSONObject.put ("mcqs", mcqsJSONArray);
+        JSONUtility.save (testsJSONObject, JSONUtility.JSONFile.Tests);
     }
 
     public static class MCQ extends Test {
@@ -67,6 +68,7 @@ public class Test {
             public String question;
             public List <String> answers;
             public Message.Attachment image;
+            public long messageID;
 
             public Question (final String question, final String correct, final String... wrong) {
                 this.question = question;
@@ -105,6 +107,7 @@ public class Test {
                 if (attachmentsListLength >= 1) {
                     question.image = attachmentsList.get (0);
                 }
+                question.messageID = message.getIdLong ();
                 return question;
             }
         }
@@ -152,7 +155,22 @@ public class Test {
                 final Question question = Question.fromMessageID (questionMessageID, jda);
                 mcqQuestions[index] = question;
             }
-            return new MCQ(title, description, mcqQuestions, subject, mcqID);
+            return new MCQ (title, description, mcqQuestions, subject, mcqID);
+        }
+
+        public JSONObject toJSON () {
+            final JSONObject jsonObject = new JSONObject ();
+            jsonObject.put ("id", this.id);
+            jsonObject.put ("title", this.title);
+            jsonObject.put ("description", this.description);
+            jsonObject.put ("subject", this.subject);
+            final JSONArray questionsJSONArray = new JSONArray ();
+            for (final Question question : this.questions) {
+                questionsJSONArray.put (question.messageID);
+            }
+            jsonObject.put ("questions", questionsJSONArray);
+            jsonObject.put ("mcq", true);
+            return jsonObject;
         }
 
         public static MCQ find (final String mcqID) {
